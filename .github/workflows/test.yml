@@ -1,0 +1,17 @@
+name: Play Ground
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Look around
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print environment
+        run: |
+          printenv
+          pwd -P
+          ls -a -l
+          ls -a -l ..
