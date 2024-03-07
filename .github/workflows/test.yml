@@ -20,3 +20,4 @@ jobs:
           git clone ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git
           cd ${GITHUB_REPOSITORY##*/}
           ls -a -l
+          git branch --contains tags/${GITHUB_REF_NAME}
