@@ -14,3 +14,9 @@ jobs:
         run: |
           printenv | LC_ALL=C sort
           pwd -P
+
+      - name: Repo status
+        run: |
+          git clone ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git
+          cd ${GITHUB_REPOSITORY##*/}
+          ls -a -l
