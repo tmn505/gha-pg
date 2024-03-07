@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Print environment
         run: |
-          printenv
+          printenv | LC_ALL=C sort
           pwd -P
           ls -a -l
           ls -a -l ..
