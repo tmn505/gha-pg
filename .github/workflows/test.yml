@@ -1,6 +1,7 @@
 name: Play Ground
 on:
   push:
+    tags: '*'
   workflow_dispatch:
 
 jobs:
@@ -13,5 +14,3 @@ jobs:
         run: |
           printenv | LC_ALL=C sort
           pwd -P
-          ls -a -l
-          ls -a -l ..
