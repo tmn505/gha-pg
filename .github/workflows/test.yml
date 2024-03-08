@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Clone
+        uses: actions/checkout
+
       - name: Print environment
         run: |
           printenv | LC_ALL=C sort
