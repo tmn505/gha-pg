@@ -1,7 +1,7 @@
 name: Play Ground
 on:
   push:
-    tags: '*'
+    tags: 'v0.0.*'
   workflow_dispatch:
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Clone
-        uses: actions/checkout@latest
+        uses: actions/checkout@v4
 
       - name: Print environment
         run: |
@@ -20,7 +20,6 @@ jobs:
 
       - name: Repo status
         run: |
-          git clone ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git
-          cd ${GITHUB_REPOSITORY##*/}
+          pwd -P
           ls -a -l
-          git branch --contains ${GITHUB_REF_NAME} | cut -c 3-
+          git status
