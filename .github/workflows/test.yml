@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Clone
-        uses: actions/checkout
+        uses: actions/checkout@latest
 
       - name: Print environment
         run: |
