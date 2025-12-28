@@ -33,15 +33,7 @@ jobs:
       - name: ARM 32 bit test
         run: |
           mkdir alarm
-          sudo systemctl --no-pager status
-          ip a
-          sudo ls -l /etc/resolv.conf
           sudo resolvectl --no-pager status
-          sudo resolvectl --no-pager show-cache
-          sudo resolvectl --no-pager show-server-state
-          sudo resolvectl --json=pretty status >> resolv.json
-          echo "json?"
-          cat resolv.json || true
           sudo cat /run/systemd/resolve/stub-resolv.conf || true
           sudo apt-get update
           sudo apt-get -y install libarchive-tools zstd
@@ -56,6 +48,7 @@ jobs:
           sudo mount --rbind /dev alarm/dev/
           sudo mount --make-rslave alarm/dev/
           sudo resolvectl status eth0 | awk '/Current DNS Server.*/ {print "nameserver " $4}' >> alarm/etc/resolv.conf
+          sudo cat /run/systemd/resolve/stub-resolv.conf >> alarm/etc/resolv.conf
           sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
-          sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; ip a; cat /etc/resolv.conf; ping -c 4 mirror.archlinuxarm.org"
+          sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
