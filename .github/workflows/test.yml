@@ -39,6 +39,7 @@ jobs:
           sudo resolvectl --no-pager status
           sudo resolvectl --no-pager show-cache
           sudo resolvectl --no-pager show-server-state
+          sudo resolvectl --json=pretty status eth0
           sudo cat /run/systemd/resolve/stub-resolv.conf || true
           sudo apt-get update
           sudo apt-get -y install libarchive-tools zstd
@@ -52,8 +53,7 @@ jobs:
           sudo mount --make-rslave alarm/sys/
           sudo mount --rbind /dev alarm/dev/
           sudo mount --make-rslave alarm/dev/
-          sudo cat /etc/resolv.conf > alarm/etc/resolv.conf
-          sudo cat /run/systemd/resolve/stub-resolv.conf > alarm/etc/resolv.conf
+          sudo resolvectl -j status eth0 | jq -r '.[].servers[].addressString' | awk '{print "nameserver " $1; exit}' >> alarm/etc/resolv.conf
           sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; ip a; cat /etc/resolv.conf; ping -c 4 mirror.archlinuxarm.org"
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
