@@ -46,4 +46,5 @@ jobs:
           sudo mount --make-rslave alarm/dev/
           sudo cp -f /etc/resolv.conf alarm/etc/
           sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
+          sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; cat /etc/resolv.conf; ping -c 4 mirror.archlinuxarm.org"
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
