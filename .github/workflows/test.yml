@@ -33,6 +33,11 @@ jobs:
       - name: ARM 32 bit test
         run: |
           mkdir alarm
+          sudo systemctl --no-pager status
+          sudo ls -l /etc/resolv.conf
+          sudo resolvectl --no-pager status
+          sudo resolvectl --no-pager show-cahe
+          sudo resolvectl --no-pager show-server-state
           sudo apt-get update
           sudo apt-get -y install libarchive-tools zstd
           wget http://os.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz
@@ -44,7 +49,7 @@ jobs:
           sudo mount --make-rslave alarm/sys/
           sudo mount --rbind /dev alarm/dev/
           sudo mount --make-rslave alarm/dev/
-          sudo cp -f /etc/resolv.conf alarm/etc/
+          sudo cp /etc/resolv.conf alarm/etc/
           sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; cat /etc/resolv.conf; ping -c 4 mirror.archlinuxarm.org"
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
