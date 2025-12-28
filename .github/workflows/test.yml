@@ -37,13 +37,13 @@ jobs:
           sudo apt-get -y install libarchive-tools zstd
           wget http://os.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz
           bsdtar -x -f ArchLinuxARM-armv7-latest.tar.gz -C alarm
-          mount --bind alarm alarm
-          mount --make-rslave alarm
-          mount -t proc /proc alarm/proc/
-          mount --rbind /sys alarm/sys/
-          mount --make-rslave alarm/sys/
-          mount --rbind /dev alarm/dev/
-          mount --make-rslave alarm/dev/
-          cp -f /etc/resolv.conf alarm/etc/
-          printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
-          linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
+          sudo mount --bind alarm alarm
+          sudo mount --make-rslave alarm
+          sudo mount -t proc /proc alarm/proc/
+          sudo mount --rbind /sys alarm/sys/
+          sudo mount --make-rslave alarm/sys/
+          sudo mount --rbind /dev alarm/dev/
+          sudo mount --make-rslave alarm/dev/
+          sudo cp -f /etc/resolv.conf alarm/etc/
+          sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
+          sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
