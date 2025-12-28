@@ -39,7 +39,6 @@ jobs:
           sudo apt-get -y install libarchive-tools zstd
           wget http://os.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz
           bsdtar -x -f ArchLinuxARM-armv7-latest.tar.gz -C alarm
-          sudo rm -f alarm/etc/resolv.conf
           sudo mount --bind alarm alarm
           sudo mount --make-rslave alarm
           sudo mount -t proc /proc alarm/proc/
@@ -47,7 +46,7 @@ jobs:
           sudo mount --make-rslave alarm/sys/
           sudo mount --rbind /dev alarm/dev/
           sudo mount --make-rslave alarm/dev/
-          sudo printf "nameserver 1.1.1.1\nnameserver 8.8.8.8\n" >> alarm/etc/resolv.conf
+          sudo mount --rbind /run alarm/run/
           sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
