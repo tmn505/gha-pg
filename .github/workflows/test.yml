@@ -40,10 +40,11 @@ jobs:
           wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
           sudo bsdtar -x -f ArchLinuxARM-aarch64-latest.tar.gz -C alarm
           ls -l alarm
+          ls -l alarm/etc/locale.gen
+          sudo "en_US.UTF-8 UTF-8\n" >> alarm/etc/locale.gen
           sudo mount -t proc /proc alarm/proc/
           sudo mount -t sysfs /sys alarm/sys/
           sudo mount -o bind /dev alarm/dev/
           sudo mount -o bind /run alarm/run/
-          sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
           sudo chroot alarm /bin/bash -c "source /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
           sudo chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
