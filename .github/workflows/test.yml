@@ -30,15 +30,15 @@ jobs:
           git status
           echo "$NEW"
 
-      - name: ARM 32 bit test
+      - name: ARM 64 bit test
         run: |
           mkdir alarm
           sudo resolvectl --no-pager status
           sudo cat /run/systemd/resolve/stub-resolv.conf || true
           sudo apt-get update
           sudo apt-get -y install libarchive-tools zstd
-          wget http://os.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz
-          bsdtar -x -f ArchLinuxARM-armv7-latest.tar.gz -C alarm
+          wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
+          bsdtar -x -f ArchLinuxARM-aarch64-latest.tar.gz -C alarm
           sudo mount --bind alarm alarm
           sudo mount --make-rslave alarm
           sudo mount -t proc /proc alarm/proc/
@@ -48,5 +48,5 @@ jobs:
           sudo mount --make-rslave alarm/dev/
           sudo mount --rbind /run alarm/run/
           sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
-          sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
-          sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
+          sudo chroot alarm /bin/bash -c "source /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
+          sudo chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
