@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: Clone
         run: |
+          cd ..
           git clone "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
 
       - name: Print environment
