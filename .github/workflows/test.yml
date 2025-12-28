@@ -47,8 +47,7 @@ jobs:
           sudo mount --make-rslave alarm/sys/
           sudo mount --rbind /dev alarm/dev/
           sudo mount --make-rslave alarm/dev/
-          sudo resolvectl status eth0 | awk '/Current DNS Server.*/ {print "nameserver " $4}' >> alarm/etc/resolv.conf
-          sudo cat /run/systemd/resolve/stub-resolv.conf >> alarm/etc/resolv.conf
+          sudo printf "nameserver 1.1.1.1\nnameserver 8.8.8.8\n" >> alarm/etc/resolv.conf
           sudo printf "en_US.UTF-8 UTF-8\n" > alarm/etc/locale.gen
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
           sudo linux32 chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
