@@ -7,7 +7,7 @@ on:
 jobs:
   publish:
     name: Look around
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Clone
@@ -16,6 +16,8 @@ jobs:
 
       - name: Print environment
         run: |
+          uname -m
+          linux32 uname -m
           printenv | LC_ALL=C sort
           pwd -P
           echo "NEW=var" >> "${GITHUB_ENV}"
