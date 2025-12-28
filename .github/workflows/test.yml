@@ -38,7 +38,7 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install libarchive-tools zstd
           wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
-          bsdtar -x -p -f ArchLinuxARM-aarch64-latest.tar.gz -C alarm
+          sudo bsdtar -x -f ArchLinuxARM-aarch64-latest.tar.gz -C alarm
           ls -l alarm
           sudo mount -t proc /proc alarm/proc/
           sudo mount -t sysfs /sys alarm/sys/
