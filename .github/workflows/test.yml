@@ -38,8 +38,8 @@ jobs:
           sudo apt-get -y install libarchive-tools zstd
           wget https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/aarch64/alpine-minirootfs-3.23.2-aarch64.tar.gz
           sudo bsdtar -x -f alpine-minirootfs-3.23.2-aarch64.tar.gz -C alpine
-          sudo resolvectl status eth0 | awk '/Current DNS Server.*/ {print "nameserver " $4}' >> alarm/etc/resolv.conf
-          sudo cat /run/systemd/resolve/stub-resolv.conf >> alarm/etc/resolv.conf
+          sudo 'resolvectl status eth0 | awk '/Current DNS Server.*/ {print "nameserver " $4}' >> alarm/etc/resolv.conf'
+          sudo 'cat /run/systemd/resolve/stub-resolv.conf >> alarm/etc/resolv.conf'
           cat alarm/etc/resolv.conf
           sudo mount -t proc /proc alarm/proc/
           sudo mount -t sysfs /sys alarm/sys/
