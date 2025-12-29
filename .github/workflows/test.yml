@@ -32,17 +32,7 @@ jobs:
 
       - name: ARM 64 bit test
         run: |
-          mkdir alpine
           sudo resolvectl --no-pager status
           sudo apt-get update
           sudo apt-get -y install libarchive-tools zstd
-          wget https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/aarch64/alpine-minirootfs-3.23.2-aarch64.tar.gz
-          sudo bsdtar -x -f alpine-minirootfs-3.23.2-aarch64.tar.gz -C alpine
-          sudo bash -c "resolvectl status eth0 | awk '/Current DNS Server.*/ {print "nameserver " $4}' >> alarm/etc/resolv.conf"
-          sudo bash -c 'cat /run/systemd/resolve/stub-resolv.conf >> alarm/etc/resolv.conf'
-          cat alarm/etc/resolv.conf
-          sudo mount -t proc /proc alarm/proc/
-          sudo mount -t sysfs /sys alarm/sys/
-          sudo mount -o bind /dev alarm/dev/
-          sudo chroot alarm /bin/bash -c "source /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
-          sudo chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
+          sudo ./run.sh
