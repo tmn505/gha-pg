@@ -9,6 +9,6 @@ cat alpine/etc/resolv.conf
 mount -t proc /proc alpine/proc/
 mount -t sysfs /sys alpine/sys/
 mount -o bind /dev alpine/dev/
-chroot alpine /bin/bash -c "source /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
-chroot alpine /bin/bash -c "source /etc/profile; apk update; apk upgrade"
+chroot alpine /bin/ash -c ". /etc/profile; ping -c 4 8.8.8.8; ping -c 4 mirror.archlinuxarm.org"
+chroot alpine /bin/ash -c ". /etc/profile; apk update; apk upgrade"
 #chroot alarm /bin/bash -c "source /etc/profile; pacman-key --init; pacman-key --populate archlinuxarm; pacman -S -y -u --noconfirm base-devel; locale-gen; uname -a"
