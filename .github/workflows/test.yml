@@ -73,11 +73,17 @@ jobs:
         run: |
           mkdir -p tmp
 
-      - name: Restore cache
+      - name: Restore 1st cache
         uses: actions/cache/restore@v5
         with:
           path: tmp
-          key: [first, second]
+          key: first
+
+      - name: Restore 2nd cache
+        uses: actions/cache/restore@v5
+        with:
+          path: tmp
+          key: second
 
       - name: Check restored cache
         run: |
