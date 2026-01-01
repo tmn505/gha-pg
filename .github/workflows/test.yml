@@ -23,18 +23,18 @@ jobs:
           pwd -P
           echo "NEW=var" >> "${GITHUB_ENV}"
 
-      - name: Repo status
-        run: |
-          pwd -P
-          ls -a -l
-          git status
-          echo "$NEW"
-
       - name: Restore 1st cache
         uses: actions/cache/restore@v5
         with:
           path: tmp
-          key: ${{ github.job }}-
+          key: ${{ github.job }}
+
+      - name: Repo status
+        run: |
+          pwd -P
+          ls -a -l -R
+          git status
+          echo "$NEW"
 
       - name: Download
         run: |
@@ -83,13 +83,13 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: tmp
-          key: aarch64-
+          key: aarch64
 
       - name: Restore 2nd cache
         uses: actions/cache/restore@v5
         with:
           path: tmp
-          key: x86_64-
+          key: x86_64
 
       - name: Check restored cache
         run: |
