@@ -74,7 +74,7 @@ jobs:
           mkdir -p tmp
 
       - name: Restore cache
-        uses: action/cache/restore@5
+        uses: action/cache/restore@v5
         with:
           path: tmp
           key: tmp-
