@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
+  aarch64:
     name: Look around
     runs-on: ubuntu-24.04-arm
 
@@ -16,7 +16,6 @@ jobs:
 
       - name: Print environment
         run: |
-          echo ${{ github.job }}
           uname -m
           linux32 uname -m
           printenv | LC_ALL=C sort
@@ -33,37 +32,36 @@ jobs:
       - name: Download
         run: |
           sudo resolvectl --no-pager status
-          mkdir -p tmp
-          cd tmp
+          mkdir -p tmp/${{ github.job }}
+          cd tmp/${{ github.job }}
           wget https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/aarch64/alpine-minirootfs-3.23.2-aarch64.tar.gz
 
       - name: Save cache
         uses: actions/cache/save@v5
         with:
-          path: tmp
-          key: first
+          path: tmp/${{ github.job }}
+          key: ${{ github.job }}
 
-  deploy:
+  x86_64:
     name: Summarize
     runs-on: ubuntu-latest
 
     steps:
       - name: Print environment
         run: |
-          echo ${{ github.job }}
           uname -m
           linux32 uname -m
           printenv | LC_ALL=C sort
           pwd -P
-          mkdir -p tmp
-          cd tmp
+          mkdir -p tmp/${{ github.job }}
+          cd tmp/${{ github.job }}
           curl -L -O https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/x86_64/alpine-minirootfs-3.22.2-x86_64.tar.gz
 
       - name: Save cache
         uses: actions/cache/save@v5
         with:
-          path: tmp
-          key: second
+          path: tmp/${{ github.job }}
+          key: ${{ github.job }}
 
   ending:
     name: The End
@@ -73,23 +71,21 @@ jobs:
     steps:
       - name: Prepare tree
         run: |
-          echo ${{ github.job }}
-          mkdir -p tmp
+          mkdir -p tmp/aarch64 tmp/x86_64
 
       - name: Restore 1st cache
         uses: actions/cache/restore@v5
         with:
           path: tmp
-          key: first
+          key: aarch64
 
       - name: Restore 2nd cache
         uses: actions/cache/restore@v5
         with:
           path: tmp
-          key: second
+          key: x86_64
 
       - name: Check restored cache
         run: |
-          ls -l
-          ls -l tmp
+          ls -l -R
 
