@@ -40,7 +40,7 @@ jobs:
         uses: actions/cache/save@v5
         with:
           path: tmp
-          key: download
+          key: tmp-first
 
   deploy:
     name: Summarize
@@ -54,14 +54,33 @@ jobs:
           printenv | LC_ALL=C sort
           pwd -P
           mkdir -p tmp
+          cd tmp
+          curl -L -O https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/x86_64/alpine-minirootfs-3.22.2-x86_64.tar.gz
 
-      - name: Restore cache
-        uses: actions/cache/restore@v5
+      - name: Save cache
+        uses: actions/cache/save@v5
         with:
           path: tmp
-          key: download
+          key: tmp-second
+
+  ending:
+    name: The End
+    needs: [publish, deploy]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Prepare tree
+        run: |
+          mkdir -p tmp
+
+      - name: Restore cache
+        uses: action/cache/restore@5
+        with:
+          path: tmp
+          key: tmp-
 
       - name: Check restored cache
         run: |
           ls -l
           ls -l tmp
+
