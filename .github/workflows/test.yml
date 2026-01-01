@@ -87,5 +87,6 @@ jobs:
 
       - name: Check restored cache
         run: |
+          pwd
           ls -l -R
 
