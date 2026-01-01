@@ -1,11 +1,11 @@
-name: Play Grond
+name: Play Ground
 on:
   push:
   workflow_dispatch:
 
 jobs:
   aarch64:
-    name: Look around
+    name: Build ${{ github.job }}
     runs-on: ubuntu-24.04-arm
 
     steps:
@@ -46,10 +46,10 @@ jobs:
         uses: actions/cache/save@v5
         with:
           path: tmp/${{ github.job }}
-          key: ${{ github.job }}
+          key: ${{ github.job }}-${{ github.run_id }}
 
   x86_64:
-    name: Summarize
+    name: Build ${{ github.job }}
     runs-on: ubuntu-latest
 
     steps:
@@ -68,7 +68,7 @@ jobs:
         uses: actions/cache/save@v5
         with:
           path: tmp/${{ github.job }}
-          key: ${{ github.job }}
+          key: ${{ github.job }}-${{ github.run_id }}
 
   ending:
     name: The End
@@ -96,4 +96,8 @@ jobs:
         run: |
           pwd
           ls -l -R
+
+      - name: Delete current cache
+        run: |
+          curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/caches?key=x86_64-$GITHUB_RUN_ID"
 
