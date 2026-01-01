@@ -40,7 +40,7 @@ jobs:
         uses: actions/cache/save@v5
         with:
           path: tmp
-          key: tmp-first
+          key: first
 
   deploy:
     name: Summarize
@@ -61,7 +61,7 @@ jobs:
         uses: actions/cache/save@v5
         with:
           path: tmp
-          key: tmp-second
+          key: second
 
   ending:
     name: The End
@@ -74,10 +74,10 @@ jobs:
           mkdir -p tmp
 
       - name: Restore cache
-        uses: action/cache/restore@v5
+        uses: actions/cache/restore@v5
         with:
           path: tmp
-          key: tmp-
+          key: [first, second]
 
       - name: Check restored cache
         run: |
