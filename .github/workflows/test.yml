@@ -16,6 +16,7 @@ jobs:
 
       - name: Print environment
         run: |
+          mkdir -p tmp/${{ github.job }}
           uname -m
           linux32 uname -m
           printenv | LC_ALL=C sort
@@ -29,12 +30,17 @@ jobs:
           git status
           echo "$NEW"
 
+      - name: Restore 1st cache
+        uses: actions/cache/restore@v5
+        with:
+          path: tmp
+          key: ${{ github.job }}
+
       - name: Download
         run: |
           sudo resolvectl --no-pager status
-          mkdir -p tmp/${{ github.job }}
           cd tmp/${{ github.job }}
-          wget https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/aarch64/alpine-minirootfs-3.23.2-aarch64.tar.gz
+          curl -L -O https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/aarch64/alpine-minirootfs-3.23.2-aarch64.tar.gz
 
       - name: Save cache
         uses: actions/cache/save@v5
