@@ -26,7 +26,7 @@ jobs:
       - name: Restore 1st cache
         uses: actions/cache/restore@v5
         with:
-          path: tmp
+          path: tmp/${{ github.job }}
           key: ${{ github.job }}
 
       - name: Repo status
@@ -82,13 +82,13 @@ jobs:
       - name: Restore 1st cache
         uses: actions/cache/restore@v5
         with:
-          path: tmp
+          path: tmp/aarch64
           key: aarch64
 
       - name: Restore 2nd cache
         uses: actions/cache/restore@v5
         with:
-          path: tmp
+          path: tmp/x86_64
           key: x86_64
 
       - name: Check restored cache
