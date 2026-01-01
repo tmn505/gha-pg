@@ -1,13 +1,12 @@
-name: Play Ground
+name: Play Grond
 on:
   push:
-    tags: 'v0.0.*'
   workflow_dispatch:
 
 jobs:
   publish:
     name: Look around
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Clone
@@ -30,9 +29,39 @@ jobs:
           git status
           echo "$NEW"
 
-      - name: ARM 64 bit test
+      - name: Download
         run: |
           sudo resolvectl --no-pager status
-          sudo apt-get update
-          sudo apt-get -y install libarchive-tools zstd
-          sudo ./run.sh
+          mkdir -p tmp
+          cd tmp
+          wget https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/aarch64/alpine-minirootfs-3.23.2-aarch64.tar.gz
+
+      - name: Save cache
+        uses: actions/cache/save@latest
+        with:
+          path: tmp
+          key: download
+
+  deploy:
+    name: Summarize
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print environment
+        run: |
+          uname -m
+          linux32 uname -m
+          printenv | LC_ALL=C sort
+          pwd -P
+          mkdir -p tmp
+
+      - name: Restore cache
+        uses: actions/cache/restore@latest
+        with:
+          path: tmp
+          key: download
+
+      - name: Check restored cache
+        run: |
+          ls -l
+          ls -l tmp
