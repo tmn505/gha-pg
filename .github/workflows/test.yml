@@ -46,7 +46,7 @@ jobs:
         uses: actions/cache/save@v5
         with:
           path: tmp/${{ github.job }}
-          key: ${{ github.job }}-${{ github.run_id}}
+          key: ${{ github.job }}
 
   x86_64:
     name: Summarize
@@ -68,7 +68,7 @@ jobs:
         uses: actions/cache/save@v5
         with:
           path: tmp/${{ github.job }}
-          key: ${{ github.job }}-${{ github.run_id}}
+          key: ${{ github.job }}
 
   ending:
     name: The End
