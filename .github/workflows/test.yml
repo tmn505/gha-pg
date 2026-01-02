@@ -78,6 +78,11 @@ jobs:
       actions: write
 
     steps:
+      - name: Clone
+        run: |
+          cd ..
+          git clone "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+
       - name: Prepare tree
         run: |
           mkdir -p tmp/aarch64 tmp/x86_64
