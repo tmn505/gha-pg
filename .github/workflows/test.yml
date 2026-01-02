@@ -2,8 +2,6 @@ name: Play Ground
 on:
   push:
   workflow_dispatch:
-env:
-  UDATE=`date +%s`
 
 jobs:
   aarch64:
