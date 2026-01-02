@@ -2,6 +2,8 @@ name: Play Ground
 on:
   push:
   workflow_dispatch:
+env:
+  UDATE=`date +%s`
 
 jobs:
   aarch64:
@@ -108,16 +110,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh cache list --json key
+          key=$(gh cache list --json key --jq '.[].key')
+          echo $key
+          for k in $key; do
+            if [[ "$k" != *-${GITHUB_RUN_ID} ]]; then
+              gh cache delete "$k"
+              sleep 0.2
+            fi
+          done
           curl -L \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/${{ github.repository }}/actions/caches"
-          curl -L \
-            -X DELETE \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/caches?key=x86_64-${{ github.run_id }}"
 
