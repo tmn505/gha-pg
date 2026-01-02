@@ -74,6 +74,8 @@ jobs:
     name: The End
     needs: [aarch64, x86_64]
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
 
     steps:
       - name: Prepare tree
