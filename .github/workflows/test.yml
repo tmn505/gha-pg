@@ -100,6 +100,8 @@ jobs:
           ls -l -R
 
       - name: Delete current cache
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh cache list --json key
           curl -L \
