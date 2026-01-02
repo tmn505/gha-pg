@@ -5,7 +5,6 @@ on:
 
 jobs:
   aarch64:
-    name: Build aarch64
     runs-on: ubuntu-24.04-arm
 
     steps:
@@ -49,7 +48,6 @@ jobs:
           key: ${{ github.job }}-${{ github.run_id }}
 
   x86_64:
-    name: Build x86_64
     runs-on: ubuntu-latest
 
     steps:
@@ -104,17 +102,15 @@ jobs:
           pwd
           ls -l -R
 
-      - name: Delete current cache
+      - name: Delete old cache
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           keylist=$(gh cache list --json key --jq '.[].key')
-          echo $keylist
           for k in $keylist; do
             if [[ "$k" != *-${GITHUB_RUN_ID} ]]; then
               gh cache delete "$k"
               sleep 0.2
             fi
           done
-          gh cache list
 
